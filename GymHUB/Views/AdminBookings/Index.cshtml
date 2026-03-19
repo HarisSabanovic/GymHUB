@@ -1,0 +1,57 @@
+﻿@model IEnumerable<GymHUB.Models.Booking>
+
+@{
+    var groupedBookings = Model
+        .Where(b => b.ClassSession != null)
+        .OrderBy(b => b.ClassSession!.StartTime)
+        .ThenBy(b => b.ClassSession!.Title)
+        .GroupBy(b => new
+        {
+            Title = b.ClassSession!.Title,
+            StartTime = b.ClassSession!.StartTime,
+            RoomName = b.ClassSession!.Room != null ? b.ClassSession.Room.Name : "Ingen sal"
+        });
+}
+
+<h2>Alla bokningar (Admin)</h2>
+
+@if (!groupedBookings.Any())
+{
+    <p>Det finns inga bokningar ännu.</p>
+}
+else
+{
+    @foreach (var group in groupedBookings)
+    {
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-1">@group.Key.Title</h4>
+                <small>
+                    Start: @group.Key.StartTime.ToString("yyyy-MM-dd HH:mm") |
+                    Sal: @group.Key.RoomName |
+                    Antal bokade: @group.Count()
+                </small>
+            </div>
+
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Användare</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var booking in group)
+                        {
+                            <tr>
+                                <td>@booking.User?.Email</td>
+                                <td>@booking.Status</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+}

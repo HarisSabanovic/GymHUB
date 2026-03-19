@@ -1,0 +1,28 @@
+﻿@model IEnumerable<GymHUB.Models.ClassSession>
+
+<h2>Kommande pass</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="grid grid-3">
+    @foreach (var s in Model)
+    {
+        <div class="card">
+            <h3 class="text-white">@s.Title</h3>
+            <p>@s.Description</p>
+            <p><strong>Start:</strong> @s.StartTime</p>
+            <p><strong>Slut:</strong> @s.EndTime</p>
+            <p><strong>Sal:</strong> @s.Room?.Name</p>
+            <p><strong>Instruktör:</strong> @s.Instructor?.FirstName @s.Instructor?.LastName</p>
+
+            <a class="btn btn-primary" asp-action="Details" asp-route-id="@s.ClassSessionId">Visa pass</a>
+        </div>
+    }
+</div>

@@ -1,0 +1,67 @@
+﻿@model GymHUB.Models.ClassSession
+
+@{
+    ViewData["Title"] = "Passdetaljer";
+    var bookedCount = Model.Bookings.Count(b => b.Status == "Booked");
+    var capacity = Model.Room?.MaxCapacity ?? 0;
+    var spotsLeft = capacity - bookedCount;
+}
+
+<div class="card">
+    <h1>@Model.Title</h1>
+    <p>@Model.Description</p>
+
+    <p><strong>Tid:</strong> @Model.StartTime - @Model.EndTime</p>
+    <p><strong>Sal:</strong> @Model.Room?.Name</p>
+    <p><strong>Instruktör:</strong> @Model.Instructor?.FirstName @Model.Instructor?.LastName</p>
+    <p><strong>Platser kvar:</strong> @spotsLeft</p>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (User.Identity?.IsAuthenticated ?? false)
+    {
+        @if (spotsLeft <= 0)
+        {
+            <div class="alert alert-info">Detta pass är fullbokat.</div>
+        }
+        else
+        {
+            <form asp-controller="Bookings" asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="classSessionId" value="@Model.ClassSessionId" />
+                <button class="btn btn-primary" type="submit">Boka pass</button>
+            </form>
+        }
+
+        <p>
+            <a asp-controller="Bookings" asp-action="My">Gå till mina bokningar</a>
+        </p>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Du behöver vara inloggad för att boka detta pass.
+        </div>
+
+        <a class="btn btn-secondary" asp-area="Identity" asp-page="/Account/Login">Logga in</a>
+    }
+
+    @if (User.IsInRole("Admin"))
+    {
+        <p style="margin-top: 1rem;">
+            <a asp-controller="AdminBookings"
+               asp-action="ForSession"
+               asp-route-classSessionId="@Model.ClassSessionId">
+                Se bokningar för detta pass
+            </a>
+        </p>
+    }
+</div>

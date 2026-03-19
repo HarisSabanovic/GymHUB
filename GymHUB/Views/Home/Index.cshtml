@@ -1,8 +1,65 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "GymHUB";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+
+    <!-- Hero / Welcome -->
+    <div class="p-5 mb-4 bg-dark text-white rounded text-center">
+        <h1 class="display-4">Välkommen till GymHUB</h1>
+        <p class="lead">
+            Boka träningspass, upptäck nya klasser och håll koll på ditt träningsschema.
+        </p>
+
+        <a asp-controller="ClassSessions" asp-action="Index" class="btn btn-warning btn-lg">
+            Se alla pass
+        </a>
+    </div>
+
+
+    <!-- Info om gymmet -->
+    <div class="row text-center mb-5">
+        <div class="col-md-4">
+            <h3>Moderna lokaler</h3>
+            <p>
+                Våra träningssalar är utrustade med modern utrustning och gott om plats
+                för alla typer av gruppträning.
+            </p>
+        </div>
+
+        <div class="col-md-4">
+            <h3>Erfarna instruktörer</h3>
+            <p>
+                Våra instruktörer har lång erfarenhet och hjälper dig att få ut
+                det mesta av din träning.
+            </p>
+        </div>
+
+        <div class="col-md-4">
+            <h3>Enkel bokning</h3>
+            <p>
+                Boka dina pass direkt via GymHUB och håll koll på dina bokningar
+                på ett och samma ställe.
+            </p>
+        </div>
+    </div>
+
+
+    <!-- Pass sektion -->
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Upptäck våra pass</h3>
+        </div>
+
+        <div class="card-body text-center">
+            <p>
+                Se vårt schema och boka ett pass som passar dig.
+            </p>
+
+            <a asp-controller="ClassSessions" asp-action="Index" class="btn btn-primary">
+                Visa alla pass
+            </a>
+        </div>
+    </div>
+
 </div>

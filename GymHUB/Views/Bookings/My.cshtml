@@ -1,0 +1,48 @@
+﻿@model IEnumerable<GymHUB.Models.Booking>
+
+@{
+    ViewData["Title"] = "Mina bokningar";
+}
+
+<div class="page-header">
+    <h1>Mina bokningar</h1>
+    <p>Här kan du se dina bokade och avbokade pass.</p>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<table class="table-custom">
+    <thead>
+        <tr>
+            <th>Pass</th>
+            <th>Tid</th>
+            <th>Sal</th>
+            <th>Status</th>
+            <th>Åtgärd</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td>@b.ClassSession?.Title</td>
+                <td>@b.ClassSession?.StartTime</td>
+                <td>@b.ClassSession?.Room?.Name</td>
+                <td>@b.Status</td>
+                <td>
+                    @if (b.Status == "Booked")
+                    {
+                        <form asp-action="Cancel" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@b.BookingId" />
+                            <button class="btn btn-danger" type="submit">Avboka</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
